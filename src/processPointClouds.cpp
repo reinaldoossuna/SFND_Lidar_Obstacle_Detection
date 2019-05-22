@@ -342,7 +342,7 @@ void ProcessPointClouds<PointT>::clusterHelper(int i, typename pcl::PointCloud<P
 }
 
   template<typename PointT>
-std::vector<std::vector<int>> ProcessPointClouds<PointT>::euclideanCluster(typename pcl::PointCloud<PointT>::Ptr cloud, KdTree3d* tree, float distanceTol)
+std::vector<std::vector<int>> ProcessPointClouds<PointT>::euclideanCluster(typename pcl::PointCloud<PointT>::Ptr cloud, KdTree3d* tree, float distanceTol, int minSize, int maxSize)
 {
 
   std::vector<std::vector<int>> clusters;
@@ -361,7 +361,8 @@ std::vector<std::vector<int>> ProcessPointClouds<PointT>::euclideanCluster(typen
 
     std::vector<int> cluster;
     clusterHelper(i, cloud, cluster, processed, tree, distanceTol);
-    clusters.push_back(cluster);
+    if(cluster.size() > minSize && cluster.size() < maxSize)
+      clusters.push_back(cluster);
     i++;
   }
 
